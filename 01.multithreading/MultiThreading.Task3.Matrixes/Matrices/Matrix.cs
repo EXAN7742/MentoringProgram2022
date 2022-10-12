@@ -8,7 +8,7 @@ namespace MultiThreading.Task3.MatrixMultiplier.Matrices
     /// </summary>
     public sealed class Matrix : IMatrix
     {
-        private const byte RandomMax = 100;
+        private const byte RandomMax = 10;
 
         private const byte MaxPrintElements = 5;
 
