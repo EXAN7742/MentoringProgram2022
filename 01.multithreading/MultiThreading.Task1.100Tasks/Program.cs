@@ -34,7 +34,7 @@ namespace MultiThreading.Task1._100Tasks
             Task[] taskArray = new Task[TaskAmount];
             for (int i = 0; i < TaskAmount; i++)
             {
-                int taskNumber = i;
+                int taskNumber = i;  //?? без добавления этой переменной все работало криво косо
                 Task task = new(() =>
                     {
                         lock (locker)
