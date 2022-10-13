@@ -16,7 +16,7 @@ namespace MultiThreading.Task4.Threads.Join
 {
     class Program
     {
-        static Thread thread;
+        static Semaphore semaphor = new Semaphore(10, 10);
         static void Main(string[] args)
         {
             Console.WriteLine("4.	Write a program which recursively creates 10 threads.");
@@ -29,26 +29,45 @@ namespace MultiThreading.Task4.Threads.Join
             Console.WriteLine();
 
             // feel free to add your code
-
-            thread = new Thread(SomeAction);
-            thread.Start(30);
+           
+            //PartA(10);
+            PartB(10);
+            
 
             Console.ReadLine();
         }
 
-        private static void SomeAction(object num)
+        private static void PartA(object num)
         {
-            int curNum = (int)num;
-                       
+            int curNum = (int)num;            
             if (curNum > 0)
             {  
-                Thread thread = new Thread(SomeAction);
+                Console.WriteLine($"{Thread.CurrentThread.Name} - {curNum}");
+                curNum--;
+                Thread thread = new Thread(PartA);
+                thread.Name = $"Thread {curNum}";
                 thread.Start(curNum);
-                //Thread.Sleep(2000);
-                Console.WriteLine(curNum);
-                //thread.Join();
-            }
+                thread.Join();
 
+                Console.WriteLine($"Ended work with {curNum}");
+            }
+        }
+
+        private static void PartB(object num)
+        {
+            int curNum = (int)num;
+            if (curNum > 0)
+            {
+               
+                Console.WriteLine($"{Thread.CurrentThread.Name} - {curNum}");
+                curNum--;
+                ThreadPool.QueueUserWorkItem(new WaitCallback(PartB), curNum);
+                Thread.Sleep(2000);
+
+                semaphor.WaitOne();
+                Console.WriteLine($"Ended work with {curNum}");
+                semaphor.Release();
+            }
         }
     }
 }
