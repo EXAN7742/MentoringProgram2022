@@ -7,6 +7,8 @@
    Demonstrate the work of the each case with console utility.
 */
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MultiThreading.Task6.Continuation
 {
@@ -24,7 +26,77 @@ namespace MultiThreading.Task6.Continuation
 
             // feel free to add your code
 
+            //PartA();
+            //PartB();
+            //PartC();
+            PartD();
+
             Console.ReadLine();
+        }
+
+        private static void PartD()
+        {
+            Task<bool> task1 = Task.Run(() =>
+            {
+                Thread.CurrentThread.Name = "My thread";
+                Console.WriteLine($"Executing task 1: {Thread.CurrentThread.Name}");
+                Thread.Sleep(1000);
+                return true;
+            });
+            Task task2 = task1.ContinueWith(x =>
+            {
+                Console.WriteLine($"Executing task 2: {Thread.CurrentThread.Name}");
+                Thread.Sleep(1000);
+            }, TaskContinuationOptions.LongRunning); //Не уверен в правильности
+        }
+
+        private static void PartC()
+        {
+            Task<bool> task1 = Task.Run(() =>
+            {
+                Thread.CurrentThread.Name = "My thread";
+                Console.WriteLine($"Executing task 1: {Thread.CurrentThread.Name}");
+                Thread.Sleep(1000);
+                return true;
+            });
+            Task task2 = task1.ContinueWith(x =>
+            {
+                Console.WriteLine($"Executing task 2: {Thread.CurrentThread.Name}");
+                Thread.Sleep(1000);
+            }, TaskContinuationOptions.ExecuteSynchronously);
+        }
+
+        private static void PartB()
+        {
+            Task<bool> task1 = Task.Run(() =>
+            {
+                Console.WriteLine("Executing task 1");
+                Thread.Sleep(1000);
+                throw new Exception();
+                return true;
+            });
+            Task task2 = task1.ContinueWith(x =>
+            {
+                Console.WriteLine("Executing task 2");
+                Thread.Sleep(1000);
+             }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        private static void PartA()
+        {
+            Task<bool> task1 = Task.Run(() =>
+            {
+                Console.WriteLine("Executing task 1");
+                Thread.Sleep(1000);
+                throw new Exception();
+                return true;
+            });
+            Task task2 = task1.ContinueWith(x =>
+            {
+                Console.WriteLine("Executing task 2");
+                Thread.Sleep(1000);
+                //}, TaskContinuationOptions.None);
+            });
         }
     }
 }
