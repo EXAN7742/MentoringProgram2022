@@ -10,11 +10,13 @@
  */
 
 using System;
+using System.Threading;
 
 namespace MultiThreading.Task4.Threads.Join
 {
     class Program
     {
+        static Thread thread;
         static void Main(string[] args)
         {
             Console.WriteLine("4.	Write a program which recursively creates 10 threads.");
@@ -28,7 +30,25 @@ namespace MultiThreading.Task4.Threads.Join
 
             // feel free to add your code
 
+            thread = new Thread(SomeAction);
+            thread.Start(30);
+
             Console.ReadLine();
+        }
+
+        private static void SomeAction(object num)
+        {
+            int curNum = (int)num;
+                       
+            if (curNum > 0)
+            {  
+                Thread thread = new Thread(SomeAction);
+                thread.Start(curNum);
+                //Thread.Sleep(2000);
+                Console.WriteLine(curNum);
+                //thread.Join();
+            }
+
         }
     }
 }
