@@ -16,7 +16,7 @@ namespace MultiThreading.Task4.Threads.Join
 {
     class Program
     {
-        static Semaphore semaphor = new Semaphore(10, 10);
+        static Semaphore semaphor = new Semaphore(1, 10);
         static void Main(string[] args)
         {
             Console.WriteLine("4.	Write a program which recursively creates 10 threads.");
@@ -58,13 +58,13 @@ namespace MultiThreading.Task4.Threads.Join
             int curNum = (int)num;
             if (curNum > 0)
             {
-               
+                semaphor.WaitOne();
                 Console.WriteLine($"{Thread.CurrentThread.Name} - {curNum}");
                 curNum--;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PartB), curNum);
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
 
-                semaphor.WaitOne();
+                
                 Console.WriteLine($"Ended work with {curNum}");
                 semaphor.Release();
             }
