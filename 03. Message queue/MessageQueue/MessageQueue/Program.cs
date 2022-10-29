@@ -40,7 +40,7 @@ async Task collectingFiles()
                         {
                             Value = JsonSerializer.Serialize(fileMessage)
                         });
-                        Console.WriteLine($"delivered {fileFullName} part {fileMessage.MessageIndex} to: {deliveryReport.TopicPartitionOffset}");
+                        Console.WriteLine($"Delivered {fileFullName} part {fileMessage.MessageIndex} to: {deliveryReport.TopicPartitionOffset}");
                     }
                     File.Delete(fileFullName);
                 }
