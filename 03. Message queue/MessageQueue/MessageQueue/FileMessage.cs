@@ -10,11 +10,14 @@ namespace MessageQueue
     {
         public string FileName { get; set; }
         public string FileData { get; set; }
-
-        public FileMessage(string fileName, string fileData)
+        public int MessageIndex { get; set; }
+        public int NumberOfMessages { get; set; }
+        public FileMessage(string fileName, string fileData, int messageIndex,  int numberOfMessages)
         {
             FileName = fileName;
             FileData = fileData;
+            MessageIndex = messageIndex;
+            NumberOfMessages = numberOfMessages;
         }
     }
 }
