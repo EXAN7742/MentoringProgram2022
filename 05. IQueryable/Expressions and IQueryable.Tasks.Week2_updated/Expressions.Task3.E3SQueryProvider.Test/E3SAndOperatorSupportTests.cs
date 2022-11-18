@@ -12,6 +12,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using Expressions.Task3.E3SQueryProvider.Models.Entities;
 using Xunit;
+using Expressions.Task3.E3SQueryProvider.Models.Request;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Expressions.Task3.E3SQueryProvider.Test
 {
@@ -35,7 +38,22 @@ namespace Expressions.Task3.E3SQueryProvider.Test
              */
 
             // todo: create asserts for this test by yourself, because they will depend on your final implementation
-            throw new NotImplementedException("Please implement this test and the appropriate functionality");
+            //throw new NotImplementedException("Please implement this test and the appropriate functionality");
+
+            var ftsQueryExample = new FtsQueryRequest
+            {
+                Statements = new List<Statement>
+                {
+                    new Statement {
+                        Query = "Workstation:(EPRUIZHW006)"
+                    },
+                    new Statement {
+                        Query = "Manager:(John*)"
+                    }
+                }
+            };
+            string translated = translator.Translate(expression);
+            Assert.Equal(JsonConvert.SerializeObject(ftsQueryExample), translated);
         }
 
         #endregion

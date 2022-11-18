@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Expressions.Task3.E3SQueryProvider.Models.Request;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Expressions.Task3.E3SQueryProvider
 {
@@ -33,6 +36,11 @@ namespace Expressions.Task3.E3SQueryProvider
 
                 return node;
             }
+            else if ((new[] { "Contains", "StartsWith", "EndsWith", "Equals" }).Contains(node.Method.Name))
+            {
+                createStringExpression(node.Object, node.Arguments[0], node.Method.Name);
+                return node;
+            }
             return base.VisitMethodCall(node);
         }
 
@@ -41,16 +49,35 @@ namespace Expressions.Task3.E3SQueryProvider
             switch (node.NodeType)
             {
                 case ExpressionType.Equal:
-                    if (node.Left.NodeType != ExpressionType.MemberAccess)
-                        throw new NotSupportedException($"Left operand should be property or field: {node.NodeType}");
-
-                    if (node.Right.NodeType != ExpressionType.Constant)
-                        throw new NotSupportedException($"Right operand should be constant: {node.NodeType}");
-
+                    if ((node.Left.NodeType == ExpressionType.MemberAccess) && (node.Right.NodeType == ExpressionType.Constant))
+                    {
+                        createStringExpression(node.Left, node.Right, "");
+                    }
+                    else
+                    {
+                        createStringExpression(node.Right, node.Left, "");
+                    }
+                    break;
+                case ExpressionType.AndAlso:
+                    var ftsQuery = new FtsQueryRequest
+                    {
+                        Statements = new List<Statement>()
+                    };
+                    
                     Visit(node.Left);
-                    _resultStringBuilder.Append("(");
+                    ftsQuery.Statements.Add(new Statement
+                    {
+                        Query = _resultStringBuilder.ToString()
+                    });
+                    _resultStringBuilder.Clear();
                     Visit(node.Right);
-                    _resultStringBuilder.Append(")");
+                    ftsQuery.Statements.Add(new Statement
+                    {
+                        Query = _resultStringBuilder.ToString()
+                    });
+                    _resultStringBuilder.Clear();
+
+                    _resultStringBuilder.Append(JsonConvert.SerializeObject(ftsQuery));
                     break;
 
                 default:
@@ -58,6 +85,22 @@ namespace Expressions.Task3.E3SQueryProvider
             };
 
             return node;
+        }
+
+        private void createStringExpression(Expression left, Expression right, string methodName)
+        {
+            Visit(left);
+            _resultStringBuilder.Append("(");
+            if (methodName == "Contains" || methodName == "EndsWith")
+            {
+                _resultStringBuilder.Append("*");
+            }
+            Visit(right);
+            if (methodName == "Contains" || methodName == "StartsWith")
+            {
+                _resultStringBuilder.Append("*");
+            }
+            _resultStringBuilder.Append(")");
         }
 
         protected override Expression VisitMember(MemberExpression node)
