@@ -6,7 +6,11 @@
  *    - dictionary: <parameter name: value for replacement>
  * The results could be printed in console or checked via Debugger using any Visualizer.
  */
+using AgileObjects.ReadableExpressions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace ExpressionTrees.Task1.ExpressionsTransformer
 {
@@ -17,9 +21,55 @@ namespace ExpressionTrees.Task1.ExpressionsTransformer
             Console.WriteLine("Expression Visitor for increment/decrement.");
             Console.WriteLine();
 
-            // todo: feel free to add your code here
+            //part1
+            increment();
+            decrement();
+
+            //part2
+            replacementParameter();
+            
 
             Console.ReadLine();
+        }
+
+        private static void replacementParameter()
+        {
+            var valuesToReplace = new Dictionary<string, int>();
+            valuesToReplace.Add("num", 5);
+            
+            var translator = new IncDecExpressionVisitor();
+            translator.valuesToReplace = valuesToReplace;
+
+            Expression<Func<int, int>> sourceExpression
+                = num => num * 3;
+            Console.WriteLine("Initial expression: {0}", sourceExpression.ToReadableString());
+
+            Expression translated = translator.Visit(sourceExpression);
+            Console.WriteLine("Transformed expression: {0}", translated.ToReadableString());
+        }
+
+        private static void increment()
+        {
+            var translator = new IncDecExpressionVisitor();
+            Expression<Func<int, int>> expression
+                = num => num + 1;
+            Console.WriteLine("Initial expression: {0}", expression.ToReadableString());
+
+
+            Expression translated = translator.Visit(expression);
+            Console.WriteLine("Transformed expression: {0}", translated.ToReadableString());
+        }
+
+        private static void decrement()
+        {
+            var translator = new IncDecExpressionVisitor();
+            Expression<Func<int, int>> expression
+                = num => num - 1 + 3;
+            Console.WriteLine("Initial expression: {0}", expression.ToReadableString());
+
+
+            Expression translated = translator.Visit(expression);
+            Console.WriteLine("Transformed expression: {0}", translated.ToReadableString());
         }
     }
 }
