@@ -7,12 +7,10 @@ namespace CatalogService.Controllers
     [Route("[controller]")]
     public class CategoriesController : ControllerBase
     {
-        private readonly ILogger<CategoriesController> _logger;
         private readonly IMyCatalogService _myCatalogService;
 
-        public CategoriesController(ILogger<CategoriesController> logger, IMyCatalogService myCatalogService)
+        public CategoriesController(IMyCatalogService myCatalogService)
         {
-            _logger = logger;
             _myCatalogService = myCatalogService;
         }
 

@@ -9,12 +9,10 @@ namespace CatalogService.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly ILogger<CategoriesController> _logger;
         private readonly IMyCatalogService _myCatalogService;
 
-        public ItemsController(ILogger<CategoriesController> logger, IMyCatalogService myCatalogService)
+        public ItemsController(IMyCatalogService myCatalogService)
         {
-            _logger = logger;
             _myCatalogService = myCatalogService;
         }
 
