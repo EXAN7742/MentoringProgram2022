@@ -4,24 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Composite
+namespace Composite.Task1
 {
-    public class Form
+    internal class Form: Component
     {
-        String name;
-
-        public Form(String name)
+        private List<Component> components = new List<Component>();
+        string _name;
+        public Form(string name)
         {
-            this.name = name;
+            _name= name;
+        }
+        public override void Add(Component component)
+        {
+            components.Add(component);
         }
 
-        public void AddComponent()
+        public override string ConvertToString()
         {
-        }
-
-        public string ConvertToString()
-        {
-            return String.Empty;
+            StringBuilder str = new StringBuilder($"<form name={_name}>\n\r");
+            for (int i = 0; i < components.Count; i++)
+            {
+                str.Append(components[i].ConvertToString());
+            }
+            str.Append($"</form>\n\r");
+            return str.ToString();
         }
     }
 }

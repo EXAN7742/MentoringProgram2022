@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Facade
 {
-    interface IInvoiceSystem
+    internal class Invoice
     {
-        void SendInvoice(Invoice invoice);
+        public decimal Amount{ get; set; }
     }
 }

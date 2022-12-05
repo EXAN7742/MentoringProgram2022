@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Facade
 {
-    interface PaymentSystem
+    interface IPaymentSystem
     {
         bool MakePayment(Payment payment);
     }

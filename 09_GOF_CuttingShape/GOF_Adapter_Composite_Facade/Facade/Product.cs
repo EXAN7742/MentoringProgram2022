@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Facade
 {
-    interface IInvoiceSystem
+    internal class Product
     {
-        void SendInvoice(Invoice invoice);
+        public string ID { get; set; }
+        public string Name { get; set; }
     }
 }
