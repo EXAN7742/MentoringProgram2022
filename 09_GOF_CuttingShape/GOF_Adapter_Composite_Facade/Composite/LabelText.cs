@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Composite
 {
-    public class LabelText
-    { 
+    public class LabelText: Component
+    {
+        string _value;
         public LabelText(string value)
         {
+            _value = value;
         }
 
-        public string ConvertToString()
+        public override string ConvertToString()
 
         {
-            return String.Empty;
+            return $"<label value='{_value}'/>\n\r";
         }
 
     }

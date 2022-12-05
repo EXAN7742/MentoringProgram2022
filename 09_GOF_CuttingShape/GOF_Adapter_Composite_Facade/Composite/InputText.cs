@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace Composite
 {
-    public class InputText
-
-    { 
+    public class InputText: Component
+    {
+        string _name;
+        string _value;
         public InputText(string name, string value)
         {  
+            _name = name;
+            _value = value;
         }
 
-        public string ConvertToString()
+        public override string ConvertToString()
         {
-            return String.Empty;
+            return $"<inputText name='{_name}' value='{_value}'/>\n\r";
         }
     }
 }

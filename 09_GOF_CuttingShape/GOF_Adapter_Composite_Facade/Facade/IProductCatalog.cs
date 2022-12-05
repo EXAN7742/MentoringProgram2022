@@ -9,6 +9,5 @@ namespace Facade
     interface IProductCatalog
     {
         Product GetProductDetails(string productId);
-
     }
 }
