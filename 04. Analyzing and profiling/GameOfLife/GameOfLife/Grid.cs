@@ -138,6 +138,8 @@ namespace GameOfLife
             {
                 for (int j = 0; j < SizeY; j++)
                 {
+                    //There are performance optimizations
+                    //
 //                    nextGenerationCells[i, j] = CalculateNextGeneration(i,j);          // UNOPTIMIZED
                     CalculateNextGeneration(i, j, ref alive, ref age);   // OPTIMIZED
                     nextGenerationCells[i, j].IsAlive = alive;  // OPTIMIZED
